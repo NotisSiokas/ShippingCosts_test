@@ -1,13 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
+
 
 
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [error, setError] = useState(null);
+  const searchParams = new URLSearchParams(window.location.search);
+  const locale = searchParams.get('locale') || 'FR';
+  const [shippingCost, setShippingCost] = useState(null);
+  const [country, setCountry] = useState('');
+
+
+
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -15,6 +23,39 @@ function App() {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const countryParam = params.get("locale");
+    setCountry(countryParam);
+  }, []);
+
+    useEffect(() => {
+      fetch(`http://localhost:5000/shippingCost/${country}`, {
+        method: 'GET',
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setShippingCost(data[country]);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    }, [country]);
+
+    useEffect(() => {
+    if (country) {
+      fetch(`http://localhost:5000/shippingCost/${country}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setShippingCost(data.cost);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [country]);
+
 
   const handleSaveOption = async () => {
     try {
@@ -41,7 +82,7 @@ function App() {
           <h1 className="text-left">John Deere 6510</h1>
         </div>
         <div className="col-md-6">
-          <p className="text-right mb-0">Country: FR</p>
+          <p className="text-right mb-0">Country: {locale.toUpperCase()}</p>
           <p className="text-right mb-0">Bid price:</p>
           <h2 className="text-right">£24,000</h2>
         </div>
@@ -58,7 +99,7 @@ function App() {
           <button className="btn btn-primary btn-lg btn-block">Place bid</button>
           <p className="text-right mb-0">Shipping Option</p>
           <p className="text-right mb-0">
-            {selectedOption === 'own' ? 'Own transport:£0' : 'Delivery to your yard: £800'}
+            {selectedOption === 'own' ? 'Own transport: £0' : `Delivery to your yard: £${shippingCost}`}
           </p>
           <Button onClick={handleShow} className="btn btn-link">
             Update
@@ -68,20 +109,20 @@ function App() {
               <Modal.Title>Update your shipping option</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="shippingOption"
-                  id="deliveryToYard"
-                  value="yard"
-                  checked={selectedOption === 'yard'}
-                  onChange={handleOptionChange}
-                />
-                <label className="form-check-label" htmlFor="deliveryToYard">
-                  Delivery to your yard: £800
-                </label>
-              </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="shippingOption"
+                id="deliveryToYard"
+                value="yard"
+                checked={selectedOption === "yard"}
+                onChange={handleOptionChange}
+              />
+              <label className="form-check-label" htmlFor="deliveryToYard">
+                Delivery to your yard: £{shippingCost || "Loading..."}
+              </label>
+            </div>
               <div className="form-check">
                 <input
                   className="form-check-input"
