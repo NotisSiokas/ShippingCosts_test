@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from pyairtable import Table
 
 app = Flask(__name__)
@@ -22,11 +22,26 @@ def get_shipping_cost(locale):
             if 'Fee' in record['fields']:
                 fee = record['fields']['Fee']
             else:
-                fee = 'null'
+                fee = 'empty'
             data[destination] = fee
 
     # Return the data as a JSON response
     return jsonify(data)
+
+
+@app.route('/PreferredOption', methods=['POST'])
+def save_shipping_option():
+    request_data = request.get_json()
+    shipping_option = request_data.get('PreferredOption')
+    if shipping_option == 'own' or shipping_option == 'yard':
+        # Save the shipping option in Airtable
+        record_data = {
+            'Option': shipping_option
+        }
+        table.insert(record_data)
+        return f"Shipping option saved: {shipping_option}"
+    else:
+        return "Invalid option"
 
 
 if __name__ == '__main__':
