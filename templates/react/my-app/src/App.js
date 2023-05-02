@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
@@ -7,12 +7,30 @@ import { Modal, Button } from 'react-bootstrap';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
+  };
+
+  const handleSave = () => {
+    setLoading(true);
+    fetch('/PreferredOption', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ preferredOption: selectedOption })
+    })
+    .then(() => {
+      setLoading(false);
+      handleClose();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      setLoading(false);
+    });
   };
 
   return (
@@ -82,7 +100,7 @@ function App() {
               <Button variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" onClick={handleSave}>
                 Save
               </Button>
             </Modal.Footer>
