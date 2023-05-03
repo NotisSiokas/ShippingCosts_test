@@ -1,6 +1,12 @@
 # Shipping Cost API
 
-This is a simple Flask-based API that calculates the shipping cost based on the user's locale and preferred shipping option.
+#### Purpose of this project
+This project is part of the coding test for the role of Junior Full-Stack Developer at Spectinga
+Candidate: Notis Siokas
+
+
+### This is a simple Flask-based and React project that calculates the shipping cost based on the user's location and preferred shipping option.
+
 
 ## Installation
 
