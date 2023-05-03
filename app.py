@@ -1,17 +1,21 @@
+# Import necessary modules
 from flask import Flask, jsonify, request
 from pyairtable import Table
 from flask_cors import CORS
 
-
+# Create a Flask app instance
 app = Flask(__name__)
+# Allow cross-origin resource sharing (CORS)
 CORS(app)
 
+# Set up the Airtable API connection and define the table to use
 api_key = 'keyUS3NGlplBjT43a'
 base_id = 'appdEweaYaM57dnfg'
 table_name = 'tblt0S24Fts0fEF87'
 table = Table(api_key, base_id, table_name)
 
 
+# Define a route for getting shipping cost data based on locale
 @app.route('/shippingCost/<locale>', methods=['GET'])
 def get_shipping_cost(locale):
     # Retrieve data from Airtable
@@ -32,6 +36,7 @@ def get_shipping_cost(locale):
     return jsonify(data)
 
 
+# Define a route for saving preferred shipping options
 @app.route('/PreferredOption', methods=['POST'])
 def save_shipping_option():
     request_data = request.get_json()
@@ -47,5 +52,6 @@ def save_shipping_option():
         return "Invalid option"
 
 
+# Run the app if this file is executed directly
 if __name__ == '__main__':
     app.run()
