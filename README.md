@@ -1,4 +1,4 @@
-# Shipping Cost API
+# Shipping Costs Test
 
 #### Purpose of this project
 This project is part of the coding test for the role of Junior Full-Stack Developer at Spectinga.
