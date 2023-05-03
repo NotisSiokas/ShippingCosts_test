@@ -148,8 +148,8 @@ function App() {
                 </label>
               </div>
             </Modal.Body>
-            <Modal.Footer> // a footer section for a modal component
-              <Button variant="secondary" onClick={handleClose}> // a button with a "secondary" style variant and an onClick event listener that triggers the handleClose function
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
               <Button // a button with a "primary" style variant and an onClick event listener that triggers a function

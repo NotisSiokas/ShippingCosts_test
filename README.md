@@ -18,8 +18,9 @@ Candidate: Notis Siokas
 
 ### Flask
 1. Run the Flask server by executing `python app.py` in the project directory.
-2. Send a GET request to `http://localhost:5000/shippingCost/{locale}` to get the shipping cost for a specific locale.
-3. Send a POST request to `http://localhost:5000/PreferredOption` with a JSON payload in the following format: `{"PreferredOption": "{option}"}` to save the user's preferred shipping option.
+2. Send a GET request to `http://localhost:5000/shippingCost/{locale}` to get the shipping cost for a specific locale. This function is operating, and it returns the countries costs.
+3. Send a POST request to `http://localhost:5000/PreferredOption` with a JSON payload in the following format: `{"PreferredOption": "{option}"}` to save the user's preferred shipping option. 
+This function can get the POST command from the React app, however it does not save the preference on a database.
 
 ### React
 
