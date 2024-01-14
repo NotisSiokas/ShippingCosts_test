@@ -1,7 +1,7 @@
 # Shipping Costs Test
 
 #### Purpose of this project
-This project is part of the coding test for the role of Junior Full-Stack Developer at Spectinga.
+This project is part of the coding test for the role of Junior Full-Stack Developer for an e-commerce shop startup.
 
 Candidate: Notis Siokas
 
